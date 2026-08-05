@@ -1,0 +1,3 @@
+This project is purely synthetic and educational. It does not create, edit, compile, or execute real binaries, and it does not include any malicious code or binary obfuscation tools. All data are synthetic JSON feature records and CSV datasets.
+
+Do not run experiments on networked or vulnerable systems. If you later intend to analyze real binaries for defensive research, obtain written approval from your institution first and follow strict lab/sandboxing best practices (never run malware on host machines or open networks).

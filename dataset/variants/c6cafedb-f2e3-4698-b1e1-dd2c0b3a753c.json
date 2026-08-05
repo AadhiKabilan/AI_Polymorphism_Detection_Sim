@@ -1,0 +1,27 @@
+{
+  "id": "c6cafedb-f2e3-4698-b1e1-dd2c0b3a753c",
+  "label": "malware_sim",
+  "num_sections": 6,
+  "section_sizes": [
+    760832,
+    601180,
+    344996,
+    47104,
+    242688,
+    503808
+  ],
+  "section_entropy": [
+    6.32,
+    6.596,
+    5.392,
+    6.733,
+    5.229
+  ],
+  "imported_api_count": 13,
+  "strings_count": 536,
+  "entry_point": 1107975,
+  "image_base": 5368709120,
+  "junk_bytes_count": 0,
+  "resource_size": 55553,
+  "origin_id": "2d4e9df8-32d5-41fd-8998-cf51416bffdd"
+}

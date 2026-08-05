@@ -1,0 +1,22 @@
+{
+  "id": "a627e209-c207-4313-9fb1-2ff1458e8b81",
+  "label": "benign",
+  "num_sections": 3,
+  "section_sizes": [
+    116736,
+    521216,
+    424960
+  ],
+  "section_entropy": [
+    6.683,
+    4.022,
+    0.91
+  ],
+  "imported_api_count": 58,
+  "strings_count": 430,
+  "entry_point": 3895660,
+  "image_base": 5368709120,
+  "junk_bytes_count": 1947,
+  "resource_size": 61370,
+  "origin_id": "a34ed991-3e64-4e0f-b597-a14a0dd579b4"
+}

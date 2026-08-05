@@ -1,0 +1,32 @@
+{
+  "id": "12dd1e32-9c16-41f3-a897-e16603268703",
+  "label": "malware_sim",
+  "num_sections": 8,
+  "section_sizes": [
+    143360,
+    423936,
+    928768,
+    823296,
+    31744,
+    958464,
+    906240,
+    809984
+  ],
+  "section_entropy": [
+    1.475,
+    0.464,
+    3.78,
+    6.153,
+    2.119,
+    7.291,
+    0.524,
+    2.729
+  ],
+  "imported_api_count": 35,
+  "strings_count": 647,
+  "entry_point": 390537,
+  "image_base": 268435456,
+  "junk_bytes_count": 3774,
+  "resource_size": 55038,
+  "origin_id": "2035e3c3-d261-44bb-86ed-9d9b198bd866"
+}

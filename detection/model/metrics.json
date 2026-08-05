@@ -1,0 +1,37 @@
+{
+  "accuracy": 0.9986906710310965,
+  "precision": 0.9978021978021978,
+  "recall": 0.9978021978021978,
+  "confusion_matrix": [
+    [
+      2143,
+      2
+    ],
+    [
+      2,
+      908
+    ]
+  ],
+  "feature_cols": [
+    "num_sections",
+    "avg_section_entropy",
+    "total_section_size",
+    "imported_api_count",
+    "strings_count",
+    "junk_bytes_count",
+    "resource_size"
+  ],
+  "feature_importances": [
+    0.10147145682201915,
+    0.1800766939248454,
+    0.3246188640567587,
+    0.09365148265902676,
+    0.11277863234537135,
+    0.05386888208137653,
+    0.13353398811060202
+  ],
+  "samples": {
+    "train": 12220,
+    "test": 3055
+  }
+}

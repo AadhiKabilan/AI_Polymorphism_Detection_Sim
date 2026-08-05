@@ -1,0 +1,23 @@
+{
+  "id": "fda4056a-1ad3-477d-a48b-0e75baa4ecbc",
+  "label": "malware_sim",
+  "num_sections": 4,
+  "section_sizes": [
+    139264,
+    743424,
+    444052,
+    426348
+  ],
+  "section_entropy": [
+    6.817,
+    2.792,
+    6.067
+  ],
+  "imported_api_count": 64,
+  "strings_count": 358,
+  "entry_point": 3050837,
+  "image_base": 5368709120,
+  "junk_bytes_count": 1867,
+  "resource_size": 36869,
+  "origin_id": "ce07e64e-28b0-4b4d-b392-c3d514035e5b"
+}

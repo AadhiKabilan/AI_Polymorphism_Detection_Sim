@@ -1,0 +1,26 @@
+{
+  "id": "fda52e19-8921-403f-9b10-23569ba02688",
+  "label": "benign",
+  "num_sections": 5,
+  "section_sizes": [
+    69632,
+    746496,
+    685056,
+    9216,
+    128000
+  ],
+  "section_entropy": [
+    7.284,
+    5.853,
+    5.45,
+    6.308,
+    3.748
+  ],
+  "imported_api_count": 71,
+  "strings_count": 573,
+  "entry_point": 1488530,
+  "image_base": 5368709120,
+  "junk_bytes_count": 3492,
+  "resource_size": 57477,
+  "origin_id": "1b50dd1c-1f49-440d-bf18-6122701047ba"
+}
