@@ -1,17 +1,69 @@
 {
-  "accuracy": 0.9986906710310965,
-  "precision": 0.9978021978021978,
-  "recall": 0.9978021978021978,
+  "split_method": "group",
+  "accuracy": 0.5914893617021276,
+  "precision": 0.24622356495468278,
+  "recall": 0.19975490196078433,
+  "f1_score": 0.22056833558863329,
   "confusion_matrix": [
     [
-      2143,
-      2
+      1505,
+      499
     ],
     [
-      2,
-      908
+      653,
+      163
     ]
   ],
+  "classification_report": {
+    "benign": {
+      "precision": 0.6974050046339203,
+      "recall": 0.750998003992016,
+      "f1-score": 0.7232099951946179,
+      "support": 2004.0
+    },
+    "malware_sim": {
+      "precision": 0.24622356495468278,
+      "recall": 0.19975490196078433,
+      "f1-score": 0.22056833558863329,
+      "support": 816.0
+    },
+    "accuracy": 0.5914893617021276,
+    "macro avg": {
+      "precision": 0.47181428479430154,
+      "recall": 0.4753764529764002,
+      "f1-score": 0.4718891653916256,
+      "support": 2820.0
+    },
+    "weighted avg": {
+      "precision": 0.5668503752799282,
+      "recall": 0.5914893617021276,
+      "f1-score": 0.5777647490107586,
+      "support": 2820.0
+    }
+  },
+  "ml_only": {
+    "accuracy": 0.5914893617021276,
+    "precision": 0.24622356495468278,
+    "recall": 0.19975490196078433,
+    "f1_score": 0.22056833558863329,
+    "roc_auc": 0.36367705764940705
+  },
+  "heuristic_only": {
+    "accuracy": 0.7106382978723405,
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1_score": 0.0
+  },
+  "ensemble": {
+    "accuracy": 0.5914893617021276,
+    "precision": 0.24622356495468278,
+    "recall": 0.19975490196078433,
+    "f1_score": 0.22056833558863329
+  },
+  "cross_validation": {
+    "mean_f1": 0.17536149580814656,
+    "std_f1": 0.15804451143613446
+  },
   "feature_cols": [
     "num_sections",
     "avg_section_entropy",
@@ -22,16 +74,20 @@
     "resource_size"
   ],
   "feature_importances": [
-    0.10147145682201915,
-    0.1800766939248454,
-    0.3246188640567587,
-    0.09365148265902676,
-    0.11277863234537135,
-    0.05386888208137653,
-    0.13353398811060202
+    0.1030669891105135,
+    0.19982601470197925,
+    0.3617345189839287,
+    0.10493169521900979,
+    0.09300068764539439,
+    0.039164323767014245,
+    0.09827577057216019
   ],
   "samples": {
-    "train": 12220,
-    "test": 3055
-  }
+    "train": 12455,
+    "test": 2820,
+    "train_families": 84,
+    "test_families": 21,
+    "zero_leakage_verified": true
+  },
+  "data_provenance": "Evaluated on synthetic JSON PE-like feature records. Author-reported Microsoft malware dataset and extracted sample variants are external research data requiring independent provenance documentation before inclusion."
 }

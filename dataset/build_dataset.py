@@ -1,40 +1,27 @@
 import os
 import json
-from typing import List, Dict
+from typing import List, Dict, Optional
 import pandas as pd
 import numpy as np
 import click
 
+import sys
+# Ensure repository root is on sys.path for direct script execution
+REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if REPO_ROOT not in sys.path:
+    sys.path.insert(0, REPO_ROOT)
+
+from detection.detector import extract_features_from_dict, FEATURE_COLUMNS
+
 # Safety: Reads JSON feature files and writes CSV. No binaries handled.
 
 
-def _flatten_features(rec: Dict) -> Dict:
-    sizes = rec.get("section_sizes", []) or []
-    ent = rec.get("section_entropy", []) or []
-    num_sections = int(rec.get("num_sections", len(sizes)))
-    if not num_sections:
-        num_sections = len(sizes) if sizes else len(ent)
-
-    avg_entropy = float(np.mean(ent)) if len(ent) > 0 else 0.0
-    total_size = int(np.sum(sizes)) if len(sizes) > 0 else 0
-
-    return {
-        "id": rec.get("id"),
-        "origin_id": rec.get("origin_id"),
-        "num_sections": num_sections,
-        "avg_section_entropy": round(avg_entropy, 6),
-        "total_section_size": total_size,
-        "imported_api_count": int(rec.get("imported_api_count", 0)),
-        "strings_count": int(rec.get("strings_count", 0)),
-        "junk_bytes_count": int(rec.get("junk_bytes_count", 0)),
-        "resource_size": int(rec.get("resource_size", 0)),
-        "label": rec.get("label", "benign"),
-    }
-
-
-def _collect_jsons(paths: List[str]) -> List[Dict]:
+def _collect_jsons_from_dirs(dirs: List[str]) -> List[Dict]:
+    """Read all JSON artifacts across provided directories and extract flat feature records."""
     rows: List[Dict] = []
-    for p in paths:
+    seen_ids = set()
+
+    for p in dirs:
         if not os.path.isdir(p):
             continue
         for fname in os.listdir(p):
@@ -44,20 +31,38 @@ def _collect_jsons(paths: List[str]) -> List[Dict]:
             try:
                 with open(fpath, "r", encoding="utf-8") as f:
                     rec = json.load(f)
-                rows.append(_flatten_features(rec))
+                flat = extract_features_from_dict(rec)
+                art_id = flat.get("id")
+                if art_id and art_id in seen_ids:
+                    continue
+                if art_id:
+                    seen_ids.add(art_id)
+                rows.append(flat)
             except Exception as e:
                 click.secho(f"Skipping {fpath}: {e}", fg="yellow")
+
     return rows
 
 
 def build_dataset(artifacts_dir: str, variants_dir: str, out_csv: str) -> str:
-    os.makedirs(os.path.dirname(out_csv), exist_ok=True)
-    rows = _collect_jsons([artifacts_dir, variants_dir])
+    """Collect base artifacts and variants, extract features, and output a validated CSV.
+
+    Ensures consistent columns, valid non-null lineage IDs, and data validation.
+    """
+    os.makedirs(os.path.dirname(os.path.abspath(out_csv)), exist_ok=True)
+    rows = _collect_jsons_from_dirs([artifacts_dir, variants_dir])
+
+    if not rows:
+        raise ValueError(f"No valid JSON records found in {artifacts_dir} or {variants_dir}")
+
     df = pd.DataFrame(rows)
-    # Ensure consistent column order
+
+    # Standard columns with full lineage tracking
     columns = [
         "id",
         "origin_id",
+        "parent_id",
+        "generation",
         "num_sections",
         "avg_section_entropy",
         "total_section_size",
@@ -67,9 +72,32 @@ def build_dataset(artifacts_dir: str, variants_dir: str, out_csv: str) -> str:
         "resource_size",
         "label",
     ]
+
+    # Ensure all columns exist
+    for col in columns:
+        if col not in df.columns:
+            df[col] = None
+
     df = df[columns]
+
+    # Ensure origin_id is never empty/null (fallback to record id for base artifacts)
+    df["origin_id"] = df["origin_id"].fillna(df["id"])
+
+    # Clean numeric types
+    for col in FEATURE_COLUMNS:
+        df[col] = pd.to_numeric(df[col], errors="coerce").fillna(0)
+
     df.to_csv(out_csv, index=False)
-    click.secho(f"Wrote dataset with {len(df)} rows to {out_csv}", fg="green")
+
+    class_dist = df["label"].value_counts().to_dict()
+    num_families = df["origin_id"].nunique()
+
+    click.secho(
+        f"Wrote dataset with {len(df)} rows across {num_families} lineage families to {out_csv}",
+        fg="green",
+    )
+    click.secho(f"Class distribution: {class_dist}", fg="cyan")
+
     return out_csv
 
 
@@ -78,18 +106,9 @@ def build_dataset(artifacts_dir: str, variants_dir: str, out_csv: str) -> str:
 @click.option("--variants", "variants_dir", required=True, type=str, help="Directory with variant JSON files")
 @click.option("--out", "out_csv", default="dataset/combined_features.csv", show_default=True, type=str, help="Output CSV path")
 def cli(artifacts_dir: str, variants_dir: str, out_csv: str) -> None:
+    """CLI entrypoint for building combined dataset CSV."""
     build_dataset(artifacts_dir, variants_dir, out_csv)
 
 
 if __name__ == "__main__":
-    # Example minimal run:
-    #   python dataset/build_dataset.py --in artifact_simulator/sample_artifacts --variants dataset/variants --out dataset/combined_features.csv
-    cli(standalone_mode=False)
-    try:
-        default_art = os.path.join("artifact_simulator", "sample_artifacts")
-        default_var = os.path.join("dataset", "variants")
-        default_out = os.path.join("dataset", "combined_features.csv")
-        if os.path.isdir(default_art) and os.path.isdir(default_var):
-            build_dataset(default_art, default_var, default_out)
-    except Exception as e:
-        click.secho(f"Demo dataset build encountered an issue: {e}", fg="yellow")
+    cli()

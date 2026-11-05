@@ -1,0 +1,31 @@
+# Python bytecode and caches
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Environments
+.venv/
+venv/
+env/
+ENV/
+build/
+dist/
+*.egg-info/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Testing and Coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Editor and OS
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
